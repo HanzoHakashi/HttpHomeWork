@@ -1,0 +1,22 @@
+{
+  "employers": [
+    {
+      "firstname": "Jack",
+      "lastname": "Ripper",
+      "position": "Cook",
+      "age": 21
+    },
+    {
+      "firstname": "Jason",
+      "lastname": "Todd",
+      "position": "Military",
+      "age": 21
+    },
+    {
+      "firstname": "Bucker",
+      "lastname": "David",
+      "position": "Detective",
+      "age": 31
+    }
+  ]
+}

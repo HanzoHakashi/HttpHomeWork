@@ -1,0 +1,24 @@
+{
+  "journal": [
+    {
+      "book" : "Berserk",
+      "employee": "Jack",
+      "status" : "Выдано"
+    },
+    {
+      "book" : "Песнь льда и пламени",
+      "employee": " ",
+      "status" : "Книга имеется в наличии"
+    },
+    {
+      "book" : "Пикни́к на обо́чине",
+      "employee": "Bucker",
+      "status" : "Выдано"
+    },
+    {
+      "book" : "Зов Ктулху",
+      "employee": "Jason",
+      "status" : "Выдано"
+    }
+  ]
+}
