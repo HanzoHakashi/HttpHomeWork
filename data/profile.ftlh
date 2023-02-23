@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Profile</title>
 </head>
 <body>
-$END$
+<h1>Profile</h1>
+<p>Welcome, ${user.username}!</p>
+<ul>
+    <li><strong>Email:</strong> ${user.email}</li>
+    <li><strong>Username:</strong> ${user.username}</li>
+    <li><strong>Password:</strong> ${user.password}</li>
+</ul>
 </body>
 </html>

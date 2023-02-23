@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>Register</title>
 </head>
 <body>
-$END$
+<h1>Register</h1>
+<form method="post" action="/register">
+  <label for="id">ID (email address):</label>
+  <input type="text" id="id" name="id" required><br><br>
+  <label for="username">Username:</label>
+  <input type="text" id="username" name="username" required><br><br>
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" required><br><br>
+  <input type="submit" value="Sign up">
+</form>
 </body>
 </html>
