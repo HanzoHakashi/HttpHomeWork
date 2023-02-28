@@ -156,11 +156,20 @@ public abstract class BasicServer {
             e.printStackTrace();
         }
     }
+    protected static String getCookies(HttpExchange exchange){
+        return exchange.getRequestHeaders()
+                .getOrDefault("Cookie",List.of(""))
+                .get(0);
+    }
+    protected void setCookie(HttpExchange exchange, Cookie cookies){
+        exchange.getResponseHeaders().add("Set-Cookie",cookies.toString());
+    }
 
     private void handleIncomingServerRequests(HttpExchange exchange) {
         var route = getRoutes().getOrDefault(makeKey(exchange), this::respond404);
         route.handle(exchange);
     }
+
 
     public final void start() {
         server.start();

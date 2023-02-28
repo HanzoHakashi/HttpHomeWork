@@ -1,25 +1,38 @@
 package kz.attractor.java.lesson44;
 
-import Utils.Utils;
+import utils.FileService;
+import utils.Utils;
 import com.sun.net.httpserver.HttpExchange;
 import kz.attractor.java.server.ContentType;
-import kz.attractor.java.server.ResponseCodes;
+import kz.attractor.java.server.Cookie;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Lesson45Server extends Lesson44Server{
-    private Map<String,User> registeredUsers = new HashMap<>();
+    List<Cookie> cookies = new ArrayList<>();
+    Map<String,User> registeredUsers = new HashMap<>();
+    private   FileService fileService;
     public Lesson45Server(String host, int port) throws IOException {
         super(host, port);
         registerGet("/login",this::loginGet);
         registerPost("/login",this::loginPost);
+        registerGet("/profile",this::profileHandler);
         registerGet("/register",this::registrationGet);
         registerPost("/register",this::registrationPost);
         registerGet("/unsuccess",this::unsuccessGet);
     }
+
+
+    private void profileHandler(HttpExchange exchange) {
+        Path path = makeFilePath("profile.ftlh");
+        sendFile(exchange,path,ContentType.TEXT_HTML);
+    }
+
+
+
+
 
     private void unsuccessGet(HttpExchange exchange) {
         Path path = makeFilePath("unsuccess.html");
@@ -27,72 +40,52 @@ public class Lesson45Server extends Lesson44Server{
     }
 
     private void registrationPost(HttpExchange exchange) {
-        String cType = getContentType(exchange);
-        String raw = getBody(exchange);
-        Map<String,String> parsed = Utils.parseUrlEncoded(raw,"&");
-        String email = parsed.get("email");
-        String username = parsed.get("username");
-        String password = parsed.get("password");
-         if (registeredUsers.containsKey(email)) {
-            String data = "<p>Registration failed. User already exists.</p>";
-            try {
-                sendByteData(
-                        exchange,
-                        ResponseCodes.OK,
-                        ContentType.TEXT_HTML,
-                        data.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }else {
-            User newUser = new User (email, username, password);
-            registeredUsers.put(email, newUser);
-            String data = "<p>Registration successful.</p>";
-            try {
-                sendByteData(
-                        exchange,
-                        ResponseCodes.OK,
-                        ContentType.TEXT_HTML,
-                        data.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        String requestBody = getBody(exchange);
+        Map<String, String> form = Utils.parseUrlEncoded(requestBody, "&");
+        String email = form.get("email");
+        String password = form.get("password");
+        User user = new User(email,password);
+        if (registeredUsers.containsKey(email)){
+            redirect303(exchange,"/unsuccess");
         }
-
-
+        registeredUsers.put(email,user);
+        System.out.println(registeredUsers.get(email).toString());
+        redirect303(exchange,"/login");
     }
+
+
+
 
     private void registrationGet(HttpExchange exchange) {
         Path path = makeFilePath("register.html");
         sendFile(exchange,path,ContentType.TEXT_HTML);
     }
-
     private void loginPost(HttpExchange exchange) {
-        String email = exchange.getRequestHeaders().getFirst("email");
-        User user = registeredUsers.get(email);
-        if () {
-            String data = String.format("<p>Username: %s</p><p>Email: %s</p><p>Password: %s</p>",
-                    user.getUsername(), user.getEmail(), user.getPassword());
-            try {
-                sendByteData(
-                        exchange,
-                        ResponseCodes.OK,
-                        ContentType.TEXT_HTML,
-                        data.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+        Map<String, String> parsed = Utils.parseUrlEncoded(getBody(exchange), "&");
+        String email = parsed.get("email");
+        String password = parsed.get("password");
+        User user = new User(email, password);
+
+        if (registeredUsers.containsKey(email)&&registeredUsers.get(email).getPassword().equals(password)) {
+            
+            renderTemplate(exchange, "profile.ftlh", parsed);
         } else {
-            redirect303(exchange,"/unsuccess");
+            redirect303(exchange, "/unsuccess");
         }
 
     }
 
+    private boolean checkUserIsExists(User user){
+        List<User> users = new FileService<User>("user.json").readFile();
+        return users.stream()
+                .anyMatch(e->e.equals(user));
+    }
 
 
 
     private void loginGet(HttpExchange exchange) {
-        Path path = makeFilePath("profile.ftlh");
+        Path path = makeFilePath("index.html");
         sendFile(exchange,path, ContentType.TEXT_HTML);
     }
 }

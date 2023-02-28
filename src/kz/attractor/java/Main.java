@@ -2,6 +2,7 @@ package kz.attractor.java;
 
 import kz.attractor.java.lesson44.Lesson44Server;
 import kz.attractor.java.lesson44.Lesson45Server;
+import kz.attractor.java.lesson44.Lesson46Server;
 
 import java.io.IOException;
 
