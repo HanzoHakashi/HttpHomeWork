@@ -14,6 +14,7 @@
     <table class="table">
         <thead>
         <tr>
+            <th>ID</th>
             <th scope="col">Name</th>
             <th scope="col">Author</th>
             <th scope="col">Genre</th>
@@ -33,6 +34,7 @@
         <tbody>
         <#list books as book>
         <tr>
+            <td>${book.bookID}</td>
             <td>${book.name}</td>
             <td>${book.author}</td>
             <td>${book.genre}</td>
@@ -42,6 +44,19 @@
         </tbody>
 
     </table>
+    <div><p>Введите ID нужной книги</p></div>
+    <div class="input-group mb-3">
+        <form action="/takeBook" method="post">
+            <div class="form-element">
+                <label for="ID">bookID</label>
+                <input type="text" name="bookID" id="ID" placeholder="ID" required>
+                <div class="form-element">
+                    <button class="register-button" type="submit">Make your choice!</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
 </div>
 </body>
 

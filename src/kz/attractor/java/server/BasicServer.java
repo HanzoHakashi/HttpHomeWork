@@ -156,6 +156,8 @@ public abstract class BasicServer {
             e.printStackTrace();
         }
     }
+
+
     protected static String getCookies(HttpExchange exchange){
         return exchange.getRequestHeaders()
                 .getOrDefault("Cookie",List.of(""))

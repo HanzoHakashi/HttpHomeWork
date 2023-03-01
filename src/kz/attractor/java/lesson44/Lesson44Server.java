@@ -52,7 +52,7 @@ public class Lesson44Server extends BasicServer {
         renderTemplate(exchange, "books.ftlh", getBooksDataModel());
     }
 
-    private Object getBooksDataModel() {
+    protected Object getBooksDataModel() {
         return new BooksDataModel();
     }
 

@@ -16,7 +16,7 @@ public class User  {
         return Objects.hash(email, password);
     }
 
-    private int id;
+    private String uuid;
     private String email;
     private String password;
 
@@ -26,13 +26,12 @@ public class User  {
     }
 
 
-
-    public int getId() {
-        return id;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getEmail() {
@@ -54,7 +53,6 @@ public class User  {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
