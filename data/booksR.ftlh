@@ -10,18 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <form action="/logout" method="post">
-        <a class="navbar-brand" href="/logout">Logout</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        </form>
-    </div>
-</nav>
 <div class="container">
-
     <table class="table">
         <thead>
         <tr>
@@ -32,14 +21,14 @@
             <th scope="col">Year</th>
         </tr>
         </thead>
-<!--        <tfoot>-->
-<!--        <tr>-->
-<!--            <th scope="col">Name</th>-->
-<!--            <th scope="col">Author</th>-->
-<!--            <th scope="col">Genre</th>-->
-<!--            <th scope="col">Year</th>-->
-<!--        </tr>-->
-<!--        </tfoot>-->
+        <!--        <tfoot>-->
+        <!--        <tr>-->
+        <!--            <th scope="col">Name</th>-->
+        <!--            <th scope="col">Author</th>-->
+        <!--            <th scope="col">Genre</th>-->
+        <!--            <th scope="col">Year</th>-->
+        <!--        </tr>-->
+        <!--        </tfoot>-->
 
 
         <tbody>
@@ -57,12 +46,12 @@
     </table>
     <div><p>Введите ID нужной книги</p></div>
     <div class="input-group mb-3">
-        <form action="/takeBook" method="post">
+        <form action="/returnBook" method="post">
             <div class="form-element">
                 <label for="ID">bookID</label>
                 <input type="text" name="bookID" id="ID" placeholder="ID" required>
                 <div class="form-element">
-                    <button class="register-button" type="submit">Make your choice!</button>
+                    <button class="register-button" type="submit">Which Book would u like to return!</button>
                 </div>
             </div>
         </form>

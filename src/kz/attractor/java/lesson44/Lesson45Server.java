@@ -18,7 +18,6 @@ public class Lesson45Server extends Lesson44Server{
     private Map<String,User> registeredUsers = new HashMap<>();
     private Map<String, List<Book>> borrowedBooks = new HashMap<>();
     private Map<String, String> loginID = new HashMap<>();
-    private   FileService fileService;
     public Lesson45Server(String host, int port) throws IOException {
         super(host, port);
         registerGet("/login",this::loginGet);
@@ -32,11 +31,42 @@ public class Lesson45Server extends Lesson44Server{
         registerGet("/limitBook",this::limitBookHandler);
         registerGet("/actionComplete",this::actionCompHandler);
         registerGet("/returnBook",this::returnBookHandler);
+        registerPost("/returnBook",this::returnBookPost);
+        registerGet("/logout",this::logoutGet);
+    }
+
+    private void logoutGet(HttpExchange exchange) {
+        logout(exchange);
+        redirect303(exchange,"/login");
+    }
+
+    private void returnBookPost(HttpExchange exchange) {
+        User user = getUserFromCookie(exchange);
+        if (user == null) {
+            redirect303(exchange, "/login");
+            return;
+        }
+        String requestBody = getBody(exchange);
+        Map<String, String> form = Utils.parseUrlEncoded(requestBody, "&");
+        try {
+            String bookId = form.get("bookID");
+            System.out.println(bookId);
+            borrowedBooks.get(user.getEmail()).removeIf(e->e.getBookID().equals(bookId));
+            for (Book book : books){
+                if (book.getBookID().equals(bookId)){
+                    book.setStatus(0);
+                }
+            }
+        }catch (Exception e){
+            redirect303(exchange,"/bookIsTaken");
+            e.printStackTrace();
+        }
+
+
     }
 
     private void returnBookHandler(HttpExchange exchange) {
-        User user = getUserFromCookie(exchange);
-        renderTemplate(exchange,"booksR.ftlh",user);
+        renderTemplate(exchange,"booksR.ftlh",DATA_MODEL);
     }
 
     private void actionCompHandler(HttpExchange exchange) {
