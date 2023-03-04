@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
 
-public class Lesson45Server extends Lesson44Server{
+public abstract class Lesson45Server extends Lesson44Server{
     public static final String UNIQUE = "unique";
     public static final BooksDataModel DATA_MODEL = new BooksDataModel();
     List<Book> books = DATA_MODEL.addBooks();
@@ -208,13 +208,13 @@ public class Lesson45Server extends Lesson44Server{
             if (registeredUsers.containsKey(email) && registeredUsers.get(email).getPassword().equals(password)) {
                 String uuid = UUID.randomUUID().toString();
                 loginID.put(registeredUsers.get(email).getEmail(), uuid);
-                Cookie userCookie = new Cookie("user_id", uuid); // change the cookie name to "user_id"
+                Cookie userCookie = new Cookie("user_id", uuid);
                 userCookie.setMaxAge(600);
                 userCookie.setHttpOnly(true);
                 exchange.getResponseHeaders().add("Set-Cookie", userCookie.toString());
-                redirect303(exchange, "/takeBook"); // complete the redirect URL
+                redirect303(exchange, "/takeBook");
             } else {
-                redirect303(exchange, "/unsuccess"); // handle unsuccessful login
+                redirect303(exchange, "/unsuccess");
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -259,4 +259,5 @@ public class Lesson45Server extends Lesson44Server{
 
         redirect303(exchange, "/login");
     }
+
 }
