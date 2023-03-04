@@ -55,6 +55,7 @@
         <#if day.day.getDayOfWeek().getValue() == 7> </tr> </#if>
         </#list>
 
+
         </tbody>
 
     </table>

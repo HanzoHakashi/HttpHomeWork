@@ -19,6 +19,7 @@
             <th scope="col">Тип</th>
             <th scope="col">Название</th>
             <th scope="col">Описание</th>
+            <th scope="col">Действие</th>
         </tr>
         </thead>
 
@@ -29,12 +30,18 @@
             <td>${task.type}</td>
             <td>${task.name}</td>
             <td>${task.desc}</td>
+           <td> <form action="/calendar/task" method="post" class="flex flex-col align-center">
+                <input name="taskID" type="hidden" value=${task_index}>
+                <button type="submit" class="flex align-center">Удалить</button>
+            </form></td>
+
         </tr>
         </#list>
+
         </tbody>
 
     </table>
-    <a href="/createTask" class="btn btn-primary stretched-link">Создать задачу</a>
+    <a href="/createTask">Создать задачу</a>
 
 </div>
 

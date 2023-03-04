@@ -20,8 +20,21 @@ public class ControlWorkServer extends Lesson44Server{
         registerGet("/calendar",this::calendarGet);
         registerPost("/calendar",this::calendarPost);
         registerGet("/calendar/task",this::taskGet);
+        registerPost("/calendar/task",this::taskPost);
         registerGet("/createTask",this::createTaskGet);
         registerPost("/createTask",this::createTaskPost);
+    }
+
+    private void taskPost(HttpExchange exchange) {
+        Day day = dayChoice(exchange);
+        String requestBody = getBody(exchange);
+        Map<String, String> form = Utils.parseUrlEncoded(requestBody, "&");
+        String tID = form.get("taskID");
+        int tID2 = Integer.parseInt(tID);
+        System.out.println(tID);
+        cd.getDays().get(day.day.getDayOfMonth()-1).tasks.remove(tID2);
+        System.out.println(cd.getDays().get(day.day.getDayOfMonth()-1).toString());
+        redirect303(exchange,"/calendar/task");
     }
 
     private void createTaskPost(HttpExchange exchange) {
@@ -31,6 +44,7 @@ public class ControlWorkServer extends Lesson44Server{
         String name = form.get("name");
         int type = Integer.parseInt(form.get("type"));
         String desc = form.get("desc");
+        System.out.println();
         List <Day> days = cd.days;
         Task task = new Task(type,name,desc);
         days.get(day.getDay().getDayOfMonth()-1).getTasks().add(task);

@@ -18,6 +18,10 @@ public class CalendarDataModel {
     }
 
 
+    public void setDays(List<Day> days) {
+        this.days = days;
+    }
+
     public CalendarDataModel() {
         Random r = new Random();
         LocalDate now = LocalDate.now();
