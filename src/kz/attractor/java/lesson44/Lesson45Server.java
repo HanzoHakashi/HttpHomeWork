@@ -257,6 +257,7 @@ public abstract class Lesson45Server extends Lesson44Server{
         userCookie.setMaxAge(0);
         exchange.getResponseHeaders().add("Set-Cookie", userCookie.toString());
 
+
         redirect303(exchange, "/login");
     }
 

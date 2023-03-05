@@ -1,12 +1,14 @@
 package kz.attractor.java.lesson48;
 
+import utils.CandidateReader;
 import utils.FileService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CandidateDataModel {
-    private List<Candidate> candidates = new ArrayList<>();
+    public List<Candidate> candidates = new ArrayList<>();
+    private CandidateReader candidateReader = new CandidateReader();
 
     public List<Candidate> getCandidates() {
         return candidates;
@@ -17,6 +19,8 @@ public class CandidateDataModel {
     }
 
     public CandidateDataModel() {
-        this.candidates = new FileService<Candidate>("candidates.json").readFile();
+        this.candidates = candidateReader.candidates();
     }
+
+
 }

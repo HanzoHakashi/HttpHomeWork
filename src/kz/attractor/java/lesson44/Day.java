@@ -28,6 +28,13 @@ public class Day {
                 '}';
     }
 
+
+    public boolean toDay(){
+        if (day.isEqual(LocalDate.now())){
+            return true;
+        }
+     return false;
+    }
     public List<Task> getTasks() {
         return tasks;
     }

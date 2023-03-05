@@ -15,8 +15,6 @@ public class ControlWorkServer extends Lesson44Server{
     Map<String, String> userChoice = new HashMap<>();
     public ControlWorkServer(String host, int port) throws IOException {
         super(host, port);
-        System.out.println(bd);
-        System.out.println(cd);
         registerGet("/calendar",this::calendarGet);
         registerPost("/calendar",this::calendarPost);
         registerGet("/calendar/task",this::taskGet);
@@ -31,9 +29,7 @@ public class ControlWorkServer extends Lesson44Server{
         Map<String, String> form = Utils.parseUrlEncoded(requestBody, "&");
         String tID = form.get("taskID");
         int tID2 = Integer.parseInt(tID);
-        System.out.println(tID);
         cd.getDays().get(day.day.getDayOfMonth()-1).tasks.remove(tID2);
-        System.out.println(cd.getDays().get(day.day.getDayOfMonth()-1).toString());
         redirect303(exchange,"/calendar/task");
     }
 
@@ -44,7 +40,6 @@ public class ControlWorkServer extends Lesson44Server{
         String name = form.get("name");
         int type = Integer.parseInt(form.get("type"));
         String desc = form.get("desc");
-        System.out.println();
         List <Day> days = cd.days;
         Task task = new Task(type,name,desc);
         days.get(day.getDay().getDayOfMonth()-1).getTasks().add(task);
@@ -92,7 +87,6 @@ public class ControlWorkServer extends Lesson44Server{
         String requestBody = getBody(exchange);
         Map<String, String> form = Utils.parseUrlEncoded(requestBody, "&");
         String day = form.get("dayId");
-        System.out.println(day);
         Cookie userCookie = new Cookie("day",day );
         userCookie.setMaxAge(600);
         userCookie.setHttpOnly(true);

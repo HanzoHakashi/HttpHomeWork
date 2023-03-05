@@ -8,21 +8,20 @@
 </head>
 
 <body>
-    <div class="container flex flex-col align-center">
+    <div class="container flex flex-col align-center bg-danger">
     <h1>Who's winning?</h1>
     <main class="flex flex-wrap align-center">
+     <#list candidates as candidate>
     <div class="card">
-      <div class="flex flex-col align-center" href="#">
-        <img src="images/1.jpeg">
-        <p>Votes: 75%</p>
+        <div class="flex flex-col align-center" href="#">
+        <img src="images/${candidate.photo}">
+        <p>Votes: ${candidate.percentageRatio}%</p>
+         <#if candidate.alreadyVoted == 1>
+           <p>You voted for ${candidate.name}</p>
+          </#if>
       </div>
     </div>
-    <div class="card">
-      <div class="flex flex-col align-center" href="#">
-        <img src="images/1.jpeg">
-        <p>Votes: 25%</p>
-      </div>
-    </div>
+    </#list>
     <a class="back flex align-center" href="/">back to main</a>
     </main>
     </div>

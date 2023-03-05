@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class FileService<T> {
+public class FileService<Candidate> {
     private static Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static Path path;
 
@@ -19,18 +19,18 @@ public class FileService<T> {
         this.path = Paths.get("data/"+ path);
     }
 
-    public List<T> readFile(){
+    public List<Candidate> readFile(){
         String json = "";
         try {
             json = Files.readString(path);
         }catch (IOException e){
             e.printStackTrace();
         }
-        Type itemListType = new TypeToken<List<T>>() {}.getType();
+        Type itemListType = new TypeToken<List<Candidate>>() {}.getType();
         return GSON.fromJson(json,itemListType);
     }
 
-    public void writeFile(List<T> users){
+    public void writeFile(List<Candidate> users){
         String json = GSON.toJson(users);
         try {
             Files.write(path,json.getBytes());

@@ -3,12 +3,46 @@ package kz.attractor.java.lesson48;
 public class Candidate {
     private String name;
     private String photo;
-    private String candidateID;
+    private int candidateID;
+    private int totalVotes;
+    private double percentageRatio;
+    private int alreadyVoted;
 
-    public Candidate(String name, String photo, String candidateID) {
+    public int getAlreadyVoted() {
+        return alreadyVoted;
+    }
+
+    public void setAlreadyVoted(int alreadyVoted) {
+        this.alreadyVoted = alreadyVoted;
+    }
+
+    public double getPercentageRatio() {
+        return percentageRatio;
+    }
+
+    public void setPercentageRatio(double percentageRatio) {
+        this.percentageRatio = percentageRatio;
+    }
+
+    public int getTotalVotes() {
+        return totalVotes;
+    }
+
+    public void setTotalVotes(int totalVotes) {
+        this.totalVotes = totalVotes;
+    }
+
+    public Candidate(String name, String photo, int candidateID,int totalVotes, double percentageRatio) {
         this.name = name;
         this.photo = photo;
         this.candidateID = candidateID;
+        this.totalVotes = totalVotes;
+        this.percentageRatio = percentageRatio;
+
+
+    }
+    public void incrementTotalVotes() {
+        totalVotes++;
     }
 
     @Override
@@ -16,6 +50,10 @@ public class Candidate {
         return "Candidate{" +
                 "name='" + name + '\'' +
                 ", photo='" + photo + '\'' +
+                ", candidateID=" + candidateID +
+                ", totalVotes=" + totalVotes +
+                ", percentageRatio=" + percentageRatio +
+                ", alreadyVoted=" + alreadyVoted +
                 '}';
     }
 
@@ -35,14 +73,11 @@ public class Candidate {
         this.photo = photo;
     }
 
-    public Candidate() {
-    }
-
-    public String getCandidateID() {
+    public int getCandidateID() {
         return candidateID;
     }
 
-    public void setCandidateID(String candidateID) {
+    public void setCandidateID(int candidateID) {
         this.candidateID = candidateID;
     }
 }

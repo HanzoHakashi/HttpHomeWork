@@ -43,6 +43,7 @@
 
             <#list days as day>
             <#if day.day.getDayOfWeek().getValue() == 1> <tr> </#if>
+
             <td>${day.day}
                 <#list day.tasks as task>
                 <p>${task.type}
@@ -50,6 +51,7 @@
                 <form action="/calendar" method="post" class="flex flex-col align-center">
                     <input name="dayId" type="hidden" value=${day.day.getDayOfMonth()}>
                     <button type="submit" class="flex align-center">Перейти в просмотр заданий</button></form></td>
+
 
 
         <#if day.day.getDayOfWeek().getValue() == 7> </tr> </#if>

@@ -1,12 +1,11 @@
 package kz.attractor.java.lesson44;
 
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
-import kz.attractor.java.lesson44.Book;
-import kz.attractor.java.lesson44.Lesson45Server;
+import kz.attractor.java.lesson48.Candidate;
 import kz.attractor.java.lesson48.CandidateDataModel;
 import kz.attractor.java.server.ContentType;
 import kz.attractor.java.server.Cookie;
-import utils.FileService;
 import utils.Utils;
 
 import java.io.IOException;
@@ -16,33 +15,91 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class Lesson48Server extends Lesson45Server {
+public class Lesson48Server extends ControlWorkServer {
     CandidateDataModel candidateDataModel = new CandidateDataModel();
-    Map<String, String> userChoice = new HashMap<>();
+    Map<String, Integer> userChoice = new HashMap<>();
 
     public Lesson48Server(String host, int port) throws IOException {
         super(host, port);
-        registerGet("/vote", this::voteHandler);
-        registerPost("/vote", this::votePost);
+        registerGet("/", this::voteHandler);
+        registerPost("/", this::votePost);
         registerGet("/thankYou", this::thankUGet);
+        registerGet("/totalVotes", this::totalVoteHandler);
+    }
+
+    private void totalVoteHandler(HttpExchange exchange) {
+        List<Candidate> candidates = candidateDataModel.candidates;
+        int totalVotes = 0;
+        for (Candidate candidate : candidates) {
+            totalVotes += candidate.getTotalVotes();
+        }
+        for (Candidate candidate : candidates) {
+            double percentage = (double) candidate.getTotalVotes() / totalVotes * 100;
+            candidate.setPercentageRatio(percentage);
+        }
+        renderTemplate(exchange, "votes.ftlh", candidateDataModel);
     }
 
     private void thankUGet(HttpExchange exchange) {
-       Path path = makeFilePath("thankyou.ftlh");
-       sendFile(exchange,path,ContentType.TEXT_HTML);
+        Candidate candidate = getCandidateFromCookie(exchange);
+        renderTemplate(exchange, "thankyou.ftlh", candidate);
     }
 
 
     private void votePost(HttpExchange exchange) {
-            String requestB = getBody(exchange);
-            Map<String, String> choice = Utils.parseUrlEncoded(requestB, "&");
-            String canID = choice.get("candidateId");
-            System.out.println(canID);
-        System.out.println(candidateDataModel.getCandidates().toString());
-            redirect303(exchange,"/thankYou");
-
-
+            String requestBody = getBody(exchange);
+            Map<String, String> form = Utils.parseUrlEncoded(requestBody, "&");
+            String candidateID = form.get("candidateId");
+            Cookie userCookie = new Cookie("candidateId", candidateID);
+            userCookie.setMaxAge(600);
+            userCookie.setHttpOnly(true);
+            exchange.getResponseHeaders().add("Set-Cookie", userCookie.toString());
+            int canID = Integer.parseInt(candidateID);
+            if (!hasUserAlreadyVoted()){
+                for (Candidate candidate : candidateDataModel.candidates) {
+                    if (candidate.getCandidateID() == canID) {
+                        candidate.setTotalVotes(candidate.getTotalVotes() + 1);
+                        candidate.setAlreadyVoted(1);
+                    }
+                }
+            }
+            redirect303(exchange, "/thankYou");
         }
+    private boolean hasUserAlreadyVoted() {
+        for (Candidate candidate : candidateDataModel.candidates) {
+            if (candidate.getAlreadyVoted() == 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+
+    private Candidate getCandidateFromCookie(HttpExchange exchange) {
+        List<String> cookieHeaders = exchange.getRequestHeaders().get("Cookie");
+        String canID = null;
+        if (cookieHeaders != null) {
+            for (String cookieHeader : cookieHeaders) {
+                Map<String, String> cookieValues = Cookie.parse(cookieHeader);
+                String cookieName = cookieValues.keySet().iterator().next();
+                if (cookieName.equals("candidateId")) {
+                    canID = cookieValues.get(cookieName);
+                    break;
+                }
+            }
+        }
+        List<Candidate> candidates = candidateDataModel.candidates;
+        Candidate candidate = null;
+        int candidateN = Integer.parseInt(canID);
+        for (Candidate candidate1: candidates) {
+            if (candidate1.getCandidateID()==candidateN){
+                candidate=candidate1;
+            }
+        }
+        return candidate;
+    }
 
         private void voteHandler (HttpExchange exchange){
 
