@@ -30,8 +30,11 @@ public class Lesson48Server extends ControlWorkServer {
             totalVotes += candidate.getTotalVotes();
         }
         for (Candidate candidate : candidates) {
-            double percentage = (double) candidate.getTotalVotes() / totalVotes * 100;
-            candidate.setPercentageRatio(percentage);
+            if (candidate.getTotalVotes()!=0){
+                double percentage = (double) candidate.getTotalVotes() / totalVotes * 100;
+                candidate.setPercentageRatio(percentage);
+            }
+
         }
         List<Candidate> sortedCandidates = candidates.stream()
                 .sorted(Comparator.comparing(Candidate::getPercentageRatio).reversed())
