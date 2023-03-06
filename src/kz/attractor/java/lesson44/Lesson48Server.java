@@ -10,10 +10,8 @@ import utils.Utils;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Lesson48Server extends ControlWorkServer {
     CandidateDataModel candidateDataModel = new CandidateDataModel();
@@ -35,6 +33,10 @@ public class Lesson48Server extends ControlWorkServer {
             double percentage = (double) candidate.getTotalVotes() / totalVotes * 100;
             candidate.setPercentageRatio(percentage);
         }
+        List<Candidate> sortedCandidates = candidates.stream()
+                .sorted(Comparator.comparing(Candidate::getPercentageRatio).reversed())
+                .collect(Collectors.toList());
+        candidateDataModel.setCandidates(sortedCandidates);
         renderTemplate(exchange, "votes.ftlh", candidateDataModel);
     }
 
