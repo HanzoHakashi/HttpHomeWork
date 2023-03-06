@@ -1,7 +1,6 @@
 package kz.attractor.java.lesson44;
 
 
-import utils.FileService;
 import utils.Utils;
 import com.sun.net.httpserver.HttpExchange;
 import kz.attractor.java.server.ContentType;

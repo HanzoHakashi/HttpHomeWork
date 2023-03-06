@@ -1,7 +1,6 @@
 package kz.attractor.java.lesson48;
 
 import utils.CandidateReader;
-import utils.FileService;
 
 import java.util.ArrayList;
 import java.util.List;

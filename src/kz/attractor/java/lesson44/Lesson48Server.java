@@ -17,8 +17,6 @@ import java.util.UUID;
 
 public class Lesson48Server extends ControlWorkServer {
     CandidateDataModel candidateDataModel = new CandidateDataModel();
-    Map<String, Integer> userChoice = new HashMap<>();
-
     public Lesson48Server(String host, int port) throws IOException {
         super(host, port);
         registerGet("/", this::voteHandler);
@@ -60,6 +58,12 @@ public class Lesson48Server extends ControlWorkServer {
                     if (candidate.getCandidateID() == canID) {
                         candidate.setTotalVotes(candidate.getTotalVotes() + 1);
                         candidate.setAlreadyVoted(1);
+                    }
+                }
+            }else {
+                for (Candidate candidate : candidateDataModel.candidates) {
+                    if (candidate.getCandidateID() == canID) {
+                        candidate.setTotalVotes(candidate.getTotalVotes() + 1);
                     }
                 }
             }
